@@ -14,21 +14,23 @@ class Product:
         return f'{self.name}, {self.price} руб. Остаток: {self.quantity} шт.'
 
     def __add__(self, other):
+        if not isinstance(other, Product):
+            return NotImplemented
         sum1 = self.price * self.quantity
-        sum2 = self.price * self.quantity
+        sum2 = other.price * other.quantity
         return sum1 + sum2
 
     @classmethod
-    def new_product(cls,params:dict):
-        new_name,new_description,new_price,new_quantity = params['name'],params['description'],params['price'],params['quantity']
-        return cls(new_name,new_description,new_price,new_quantity)
+    def new_product(cls, params: dict):
+        new_name, new_description, new_price, new_quantity = params['name'], params['description'], params['price'], params['quantity']
+        return cls(new_name, new_description, new_price, new_quantity)
 
     @property
     def price(self):
         return self.__price
 
     @price.setter
-    def price(self,new_price):
+    def price(self, new_price):
         if new_price <= 0:
             print('Цена не должна быть нулевая или отрицательная')
         else:
@@ -36,6 +38,9 @@ class Product:
                 ans = str(input('Вы ввели цену ниже прошлой, подтвердите изменение цены (y/n,да/нет)'))
                 if ans.lower() == 'y':
                     self.__price = new_price
+            else:
+                self.__price = new_price
+
 
 class Category:
     name: str
@@ -54,13 +59,13 @@ class Category:
         Category.category_count += 1
 
     def __str__(self):
-        sum = 0
+        total_quantity = 0
         for i in self.__products:
-            sum +- i.quantity
-        return f'{self.name} количество продуктов: {sum} шт.'
+            total_quantity += i.quantity
+        return f'{self.name}, количество продуктов: {total_quantity} шт.'
 
-    def add_product(self,product):
-        if not isinstance(product,Product):
+    def add_product(self, product):
+        if not isinstance(product, Product):
             raise TypeError("Нельзя добавлять объекты не типа Класс")
         else:
             self.__products.append(product)
