@@ -10,6 +10,14 @@ class Product:
         self.__price = price
         self.quantity = quantity
 
+    def __str__(self):
+        return f'{self.name}, {self.price} руб. Остаток: {self.quantity} шт.'
+
+    def __add__(self, other):
+        sum1 = self.price * self.quantity
+        sum2 = self.price * self.quantity
+        return sum1 + sum2
+
     @classmethod
     def new_product(cls,params:dict):
         new_name,new_description,new_price,new_quantity = params['name'],params['description'],params['price'],params['quantity']
@@ -44,6 +52,12 @@ class Category:
             for i in products:
                 self.add_product(i)
         Category.category_count += 1
+
+    def __str__(self):
+        sum = 0
+        for i in self.__products:
+            sum +- i.quantity
+        return f'{self.name} количество продуктов: {sum} шт.'
 
     def add_product(self,product):
         if not isinstance(product,Product):
