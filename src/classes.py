@@ -42,6 +42,52 @@ class Product:
                 self.__price = new_price
 
 
+
+class Smartphone(Product):
+    def __init__(self, name, description, price, quantity, efficiency, model, memory, color):
+        super().__init__(name, description, price, quantity)
+        self.efficiency = efficiency
+        self.model = model
+        self.memory = memory
+        self.color = color
+
+    def __add__(self, other):
+        if isinstance(other, Smartphone):
+            return Smartphone(
+                self.name,
+                self.description,
+                self.price + other.price,
+                self.quantity + other.quantity,
+                self.efficiency,
+                self.model,
+                self.memory,
+                self.color
+            )
+        return NotImplemented
+
+
+
+class LawnGrass(Product):
+    def __init__(self, name, description, price, quantity, country, germination_period, color):
+        super().__init__(name, description, price, quantity)
+        self.country = country
+        self.germination_period = germination_period
+        self.color = color
+
+    def __add__(self, other):
+        if isinstance(other, LawnGrass):
+            return LawnGrass(
+                self.name,
+                self.description,
+                self.price + other.price,
+                self.quantity + other.quantity,
+                self.country,
+                self.germination_period,
+                self.color
+            )
+        return NotImplemented
+
+
 class Category:
     name: str
     description: str
@@ -77,3 +123,5 @@ class Category:
         for i in self.__products:
             my_list.append(f"{i.name}, {i.price} руб. Остаток: {i.quantity} шт.\n")
         return my_list
+
+

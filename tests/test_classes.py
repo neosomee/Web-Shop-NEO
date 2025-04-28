@@ -1,6 +1,6 @@
 import pytest
 
-from src.classes import Product, Category
+from src.classes import Product, Category, Smartphone, LawnGrass
 from unittest.mock import patch
 
 def test_count_category():
@@ -87,3 +87,51 @@ def test_classes_methods(capsys):
     assert captured.out == 'Смартфоны, количество продуктов: 22 шт.\n'
 
     assert product1 + product2 == 2114000.0
+
+def test_smartphone_creation():
+    phone = Smartphone("Samsung Galaxy S23 Ultra", "256GB, Серый цвет", 180000.0, 5, 95.5,
+                       "S23 Ultra", 256, "Серый")
+    assert phone.name == "Samsung Galaxy S23 Ultra"
+    assert phone.description == "256GB, Серый цвет"
+    assert phone.price == 180000.0
+    assert phone.quantity == 5
+    assert phone.efficiency == 95.5
+    assert phone.model == "S23 Ultra"
+    assert phone.memory == 256
+    assert phone.color == "Серый"
+
+def test_lawngrass_creation():
+    grass = LawnGrass("Газонная трава", "Элитная трава для газона", 500.0, 20,
+                      "Россия", "7 дней", "Зеленый")
+    assert grass.name == "Газонная трава"
+    assert grass.description == "Элитная трава для газона"
+    assert grass.price == 500.0
+    assert grass.quantity == 20
+    assert grass.country == "Россия"
+    assert grass.germination_period == "7 дней"
+    assert grass.color == "Зеленый"
+
+
+def test_product_addition():
+    p1 = Product("Prod1", "Desc1", 1000.0, 2)  # 2000
+    p2 = Product("Prod2", "Desc2", 2000.0, 3)  # 6000
+    result = p1 + p2
+    assert isinstance(result, (int, float))
+    assert result == 8000.0
+
+
+def test_smartphone_addition():
+    phone1 = Smartphone("Phone1", "Desc1", 1000.0, 2, 90, "Model1", 64, "Black")
+    phone2 = Smartphone("Phone2", "Desc2", 2000.0, 3, 85, "Model2", 128, "White")
+    result = phone1 + phone2
+    assert isinstance(result, Smartphone)
+    assert result.price == 3000.0
+    assert result.quantity == 5
+
+def test_lawngrass_addition():
+    grass1 = LawnGrass("Grass1", "Desc1", 100.0, 10, "Country1", "5 дней", "Green")
+    grass2 = LawnGrass("Grass2", "Desc2", 150.0, 15, "Country2", "7 дней", "Dark Green")
+    result = grass1 + grass2
+    assert isinstance(result, LawnGrass)
+    assert result.price == 250.0
+    assert result.quantity == 25
