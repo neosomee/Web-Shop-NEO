@@ -3,8 +3,11 @@ import pytest
 from src.classes import Product, Category, Smartphone, LawnGrass
 from unittest.mock import patch
 
+
 def test_count_category():
-    product1 = Product("Samsung Galaxy S23 Ultra", "256GB, Серый цвет, 200MP камера", 180000.0, 5)
+    product1 = Product(
+        "Samsung Galaxy S23 Ultra", "256GB, Серый цвет, 200MP камера", 180000.0, 5
+    )
     product2 = Product("Iphone 15", "512GB, Gray space", 210000.0, 8)
     category1 = Category(
         "Смартфоны",
@@ -41,29 +44,40 @@ def test_init_category(category):
         category.description
         == "Смартфоны, как средство не только коммуникации, но и получения дополнительных функций для удобства жизни"
     )
-    assert category.products == ['Samsung Galaxy S23 Ultra, 180000.0 руб. Остаток: 5 шт.\n', 'Iphone 15, 210000.0 руб. Остаток: 8 шт.\n', 'Xiaomi Redmi Note 11, 31000.0 руб. Остаток: 14 шт.\n']
+    assert category.products == [
+        "Samsung Galaxy S23 Ultra, 180000.0 руб. Остаток: 5 шт.\n",
+        "Iphone 15, 210000.0 руб. Остаток: 8 шт.\n",
+        "Xiaomi Redmi Note 11, 31000.0 руб. Остаток: 14 шт.\n",
+    ]
+
 
 def test_product_add_new():
     new_product = Product.new_product(
-        {"name": "Samsung Galaxy S23 Ultra", "description": "256GB, Серый цвет, 200MP камера", "price": 180000.0,
-         "quantity": 5})
-    assert new_product.name == 'Samsung Galaxy S23 Ultra'
+        {
+            "name": "Samsung Galaxy S23 Ultra",
+            "description": "256GB, Серый цвет, 200MP камера",
+            "price": 180000.0,
+            "quantity": 5,
+        }
+    )
+    assert new_product.name == "Samsung Galaxy S23 Ultra"
     assert new_product.price == 180000.0
 
 
-@patch('builtins.input')
-def test_product_price_set(mock_input,capsys):
+@patch("builtins.input")
+def test_product_price_set(mock_input, capsys):
     product = Product("Iphone 15", "512GB, Gray space", 210000.0, 8)
     assert product.price == 210000.0
     product.price = -100
     captured = capsys.readouterr()
-    assert captured.out == 'Цена не должна быть нулевая или отрицательная\n'
-    mock_input.return_value = 'y'
+    assert captured.out == "Цена не должна быть нулевая или отрицательная\n"
+    mock_input.return_value = "y"
     product.price = 1000
     assert product.price == 1000
-    mock_input.return_value = 'n'
+    mock_input.return_value = "n"
     product.price = 800
     assert product.price == 1000
+
 
 def test_classes_methods(capsys):
     product1 = Product("Iphone 15", "512GB, Gray space", 210000.0, 8)
@@ -71,26 +85,35 @@ def test_classes_methods(capsys):
     category = Category(
         "Смартфоны",
         "Смартфоны, как средство не только коммуникации, но и получения дополнительных функций для удобства жизни",
-        [product1, product2]
+        [product1, product2],
     )
 
     print(str(product1))
     captured = capsys.readouterr()
-    assert captured.out == 'Iphone 15, 210000.0 руб. Остаток: 8 шт.\n'
+    assert captured.out == "Iphone 15, 210000.0 руб. Остаток: 8 шт.\n"
 
     print(str(product2))
     captured = capsys.readouterr()
-    assert captured.out == 'Xiaomi Redmi Note 11, 31000.0 руб. Остаток: 14 шт.\n'
+    assert captured.out == "Xiaomi Redmi Note 11, 31000.0 руб. Остаток: 14 шт.\n"
 
     print(str(category))
     captured = capsys.readouterr()
-    assert captured.out == 'Смартфоны, количество продуктов: 22 шт.\n'
+    assert captured.out == "Смартфоны, количество продуктов: 22 шт.\n"
 
     assert product1 + product2 == 2114000.0
 
+
 def test_smartphone_creation():
-    phone = Smartphone("Samsung Galaxy S23 Ultra", "256GB, Серый цвет", 180000.0, 5, 95.5,
-                       "S23 Ultra", 256, "Серый")
+    phone = Smartphone(
+        "Samsung Galaxy S23 Ultra",
+        "256GB, Серый цвет",
+        180000.0,
+        5,
+        95.5,
+        "S23 Ultra",
+        256,
+        "Серый",
+    )
     assert phone.name == "Samsung Galaxy S23 Ultra"
     assert phone.description == "256GB, Серый цвет"
     assert phone.price == 180000.0
@@ -100,9 +123,17 @@ def test_smartphone_creation():
     assert phone.memory == 256
     assert phone.color == "Серый"
 
+
 def test_lawngrass_creation():
-    grass = LawnGrass("Газонная трава", "Элитная трава для газона", 500.0, 20,
-                      "Россия", "7 дней", "Зеленый")
+    grass = LawnGrass(
+        "Газонная трава",
+        "Элитная трава для газона",
+        500.0,
+        20,
+        "Россия",
+        "7 дней",
+        "Зеленый",
+    )
     assert grass.name == "Газонная трава"
     assert grass.description == "Элитная трава для газона"
     assert grass.price == 500.0
@@ -121,14 +152,14 @@ def test_product_addition():
 
 
 def test_smartphone_addition():
-    phone1 = Smartphone("Phone1", "Desc1", 1000.0, 2, 90, "Model1", 64, "Black")  # 1000*2 = 2000
-    phone2 = Smartphone("Phone2", "Desc2", 2000.0, 3, 85, "Model2", 128, "White") # 2000*3 = 6000
+    phone1 = Smartphone("Phone1", "Desc1", 1000.0, 2, 90, "Model1", 64, "Black")
+    phone2 = Smartphone("Phone2", "Desc2", 2000.0, 3, 85, "Model2", 128, "White")
     result = phone1 + phone2
     assert result == 8000.0
 
+
 def test_lawngrass_addition():
-    grass1 = LawnGrass("Grass1", "Desc1", 100.0, 10, "Country1", "5 дней", "Green")    # 100*10 = 1000
-    grass2 = LawnGrass("Grass2", "Desc2", 150.0, 15, "Country2", "7 дней", "Dark Green") # 150*15 = 2250
+    grass1 = LawnGrass("Grass1", "Desc1", 100.0, 10, "Country1", "5 дней", "Green")
+    grass2 = LawnGrass("Grass2", "Desc2", 150.0, 15, "Country2", "7 дней", "Dark Green")
     result = grass1 + grass2
     assert result == 3250.0
-
