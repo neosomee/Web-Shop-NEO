@@ -15,7 +15,7 @@ class Product:
 
     def __add__(self, other):
         if type(self) != type(other):
-            return TypeError
+            raise TypeError
         sum1 = self.price * self.quantity
         sum2 = other.price * other.quantity
         return sum1 + sum2

@@ -121,17 +121,14 @@ def test_product_addition():
 
 
 def test_smartphone_addition():
-    phone1 = Smartphone("Phone1", "Desc1", 1000.0, 2, 90, "Model1", 64, "Black")
-    phone2 = Smartphone("Phone2", "Desc2", 2000.0, 3, 85, "Model2", 128, "White")
+    phone1 = Smartphone("Phone1", "Desc1", 1000.0, 2, 90, "Model1", 64, "Black")  # 1000*2 = 2000
+    phone2 = Smartphone("Phone2", "Desc2", 2000.0, 3, 85, "Model2", 128, "White") # 2000*3 = 6000
     result = phone1 + phone2
-    assert isinstance(result, Smartphone)
-    assert result.price == 3000.0
-    assert result.quantity == 5
+    assert result == 8000.0
 
 def test_lawngrass_addition():
-    grass1 = LawnGrass("Grass1", "Desc1", 100.0, 10, "Country1", "5 дней", "Green")
-    grass2 = LawnGrass("Grass2", "Desc2", 150.0, 15, "Country2", "7 дней", "Dark Green")
+    grass1 = LawnGrass("Grass1", "Desc1", 100.0, 10, "Country1", "5 дней", "Green")    # 100*10 = 1000
+    grass2 = LawnGrass("Grass2", "Desc2", 150.0, 15, "Country2", "7 дней", "Dark Green") # 150*15 = 2250
     result = grass1 + grass2
-    assert isinstance(result, LawnGrass)
-    assert result.price == 250.0
-    assert result.quantity == 25
+    assert result == 3250.0
+
