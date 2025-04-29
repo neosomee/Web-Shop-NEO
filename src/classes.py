@@ -11,18 +11,23 @@ class Product:
         self.quantity = quantity
 
     def __str__(self):
-        return f'{self.name}, {self.price} руб. Остаток: {self.quantity} шт.'
+        return f"{self.name}, {self.price} руб. Остаток: {self.quantity} шт."
 
     def __add__(self, other):
-        if not isinstance(other, Product):
-            return NotImplemented
+        if type(self) != type(other):
+            raise TypeError
         sum1 = self.price * self.quantity
         sum2 = other.price * other.quantity
         return sum1 + sum2
 
     @classmethod
     def new_product(cls, params: dict):
-        new_name, new_description, new_price, new_quantity = params['name'], params['description'], params['price'], params['quantity']
+        new_name, new_description, new_price, new_quantity = (
+            params["name"],
+            params["description"],
+            params["price"],
+            params["quantity"],
+        )
         return cls(new_name, new_description, new_price, new_quantity)
 
     @property
@@ -32,14 +37,39 @@ class Product:
     @price.setter
     def price(self, new_price):
         if new_price <= 0:
-            print('Цена не должна быть нулевая или отрицательная')
+            print("Цена не должна быть нулевая или отрицательная")
         else:
             if new_price < self.__price:
-                ans = str(input('Вы ввели цену ниже прошлой, подтвердите изменение цены (y/n,да/нет)'))
-                if ans.lower() == 'y':
+                ans = str(
+                    input(
+                        "Вы ввели цену ниже прошлой, подтвердите изменение цены (y/n,да/нет)"
+                    )
+                )
+                if ans.lower() == "y":
                     self.__price = new_price
             else:
                 self.__price = new_price
+
+
+class Smartphone(Product):
+    def __init__(
+        self, name, description, price, quantity, efficiency, model, memory, color
+    ):
+        super().__init__(name, description, price, quantity)
+        self.efficiency = efficiency
+        self.model = model
+        self.memory = memory
+        self.color = color
+
+
+class LawnGrass(Product):
+    def __init__(
+        self, name, description, price, quantity, country, germination_period, color
+    ):
+        super().__init__(name, description, price, quantity)
+        self.country = country
+        self.germination_period = germination_period
+        self.color = color
 
 
 class Category:
@@ -62,7 +92,7 @@ class Category:
         total_quantity = 0
         for i in self.__products:
             total_quantity += i.quantity
-        return f'{self.name}, количество продуктов: {total_quantity} шт.'
+        return f"{self.name}, количество продуктов: {total_quantity} шт."
 
     def add_product(self, product):
         if not isinstance(product, Product):
