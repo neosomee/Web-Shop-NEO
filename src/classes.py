@@ -14,15 +14,16 @@ class Product:
         return f'{self.name}, {self.price} руб. Остаток: {self.quantity} шт.'
 
     def __add__(self, other):
-        if not isinstance(other, Product):
-            return NotImplemented
+        if type(self) != type(other):
+            return TypeError
         sum1 = self.price * self.quantity
         sum2 = other.price * other.quantity
         return sum1 + sum2
 
     @classmethod
     def new_product(cls, params: dict):
-        new_name, new_description, new_price, new_quantity = params['name'], params['description'], params['price'], params['quantity']
+        new_name, new_description, new_price, new_quantity = params['name'], params['description'], params['price'], \
+        params['quantity']
         return cls(new_name, new_description, new_price, new_quantity)
 
     @property
@@ -42,7 +43,6 @@ class Product:
                 self.__price = new_price
 
 
-
 class Smartphone(Product):
     def __init__(self, name, description, price, quantity, efficiency, model, memory, color):
         super().__init__(name, description, price, quantity)
@@ -51,21 +51,6 @@ class Smartphone(Product):
         self.memory = memory
         self.color = color
 
-    def __add__(self, other):
-        if isinstance(other, Smartphone):
-            return Smartphone(
-                self.name,
-                self.description,
-                self.price + other.price,
-                self.quantity + other.quantity,
-                self.efficiency,
-                self.model,
-                self.memory,
-                self.color
-            )
-        return NotImplemented
-
-
 
 class LawnGrass(Product):
     def __init__(self, name, description, price, quantity, country, germination_period, color):
@@ -73,19 +58,6 @@ class LawnGrass(Product):
         self.country = country
         self.germination_period = germination_period
         self.color = color
-
-    def __add__(self, other):
-        if isinstance(other, LawnGrass):
-            return LawnGrass(
-                self.name,
-                self.description,
-                self.price + other.price,
-                self.quantity + other.quantity,
-                self.country,
-                self.germination_period,
-                self.color
-            )
-        return NotImplemented
 
 
 class Category:
@@ -123,5 +95,3 @@ class Category:
         for i in self.__products:
             my_list.append(f"{i.name}, {i.price} руб. Остаток: {i.quantity} шт.\n")
         return my_list
-
-
