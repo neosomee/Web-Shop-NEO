@@ -64,6 +64,7 @@ def test_product_add_new():
     assert new_product.price == 180000.0
 
 
+@patch("src.classes.Mixin.product_log", return_value = "")
 @patch("builtins.input")
 def test_product_price_set(mock_input, capsys):
     product = Product("Iphone 15", "512GB, Gray space", 210000.0, 8)
@@ -78,7 +79,7 @@ def test_product_price_set(mock_input, capsys):
     product.price = 800
     assert product.price == 1000
 
-
+@patch("src.classes.Mixin.product_log", return_value = "")
 def test_classes_methods(capsys):
     product1 = Product("Iphone 15", "512GB, Gray space", 210000.0, 8)
     product2 = Product("Xiaomi Redmi Note 11", "1024GB, Синий", 31000.0, 14)
@@ -163,3 +164,5 @@ def test_lawngrass_addition():
     grass2 = LawnGrass("Grass2", "Desc2", 150.0, 15, "Country2", "7 дней", "Dark Green")
     result = grass1 + grass2
     assert result == 3250.0
+
+
