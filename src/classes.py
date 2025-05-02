@@ -1,12 +1,11 @@
 from abc import ABC, abstractmethod
 
 class BaseProduct(ABC):
-
     @abstractmethod
     def __init__(self, name, description, price, quantity):
         self.name = name
         self.description = description
-        self.__price = price
+        self._price = price
         self.quantity = quantity
 
     @abstractmethod
@@ -21,8 +20,8 @@ class BaseProduct(ABC):
         pass
 
 class Mixin:
-
-    def __repr__(self):
+    def __init__(self):
+        super().__init__()
         self.product_log()
 
     def product_log(self):
@@ -35,10 +34,8 @@ class Product(Mixin, BaseProduct):
     quantity: int
 
     def __init__(self, name, description, price, quantity):
-        self.name = name
-        self.description = description
-        self.__price = price
-        self.quantity = quantity
+        BaseProduct.__init__(self, name, description, price, quantity)
+        Mixin.product_log(self)
 
     def __str__(self):
         return f"{self.name}, {self.price} руб. Остаток: {self.quantity} шт."
@@ -52,33 +49,23 @@ class Product(Mixin, BaseProduct):
 
     @classmethod
     def new_product(cls, params: dict):
-        new_name, new_description, new_price, new_quantity = (
-            params["name"],
-            params["description"],
-            params["price"],
-            params["quantity"],
-        )
-        return cls(new_name, new_description, new_price, new_quantity)
+        return cls(**params)
 
     @property
     def price(self):
-        return self.__price
+        return self._price
 
     @price.setter
     def price(self, new_price):
         if new_price <= 0:
             print("Цена не должна быть нулевая или отрицательная")
         else:
-            if new_price < self.__price:
-                ans = str(
-                    input(
-                        "Вы ввели цену ниже прошлой, подтвердите изменение цены (y/n,да/нет)"
-                    )
-                )
+            if new_price < self._price:
+                ans = input("Вы ввели цену ниже прошлой, подтвердите изменение цены (y/n,да/нет)")
                 if ans.lower() == "y":
-                    self.__price = new_price
+                    self._price = new_price
             else:
-                self.__price = new_price
+                self._price = new_price
 
 
 class Smartphone(Product):
