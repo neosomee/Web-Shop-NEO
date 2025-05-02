@@ -64,22 +64,24 @@ def test_product_add_new():
     assert new_product.price == 180000.0
 
 
-@patch("builtins.input")
+@patch("builtins.input", return_value="y")
 def test_product_price_set(mock_input, capsys):
     product = Product("Iphone 15", "512GB, Gray space", 210000.0, 8)
-    assert product.price == 210000.0
+    capsys.readouterr()
     product.price = -100
     captured = capsys.readouterr()
-    assert captured.out == "Цена не должна быть нулевая или отрицательная\n"
-    mock_input.return_value = "y"
+    assert "Цена не должна быть нулевая или отрицательная" in captured.out
+    assert product.price == 210000.0  # Цена осталась прежней
     product.price = 1000
     assert product.price == 1000
+    assert mock_input.call_count == 1
     mock_input.return_value = "n"
     product.price = 800
     assert product.price == 1000
+    assert mock_input.call_count == 2
 
-
-def test_classes_methods(capsys):
+@patch("src.classes.Mixin.product_log", return_value = None)
+def test_classes_methods(mock_product_log, capsys):
     product1 = Product("Iphone 15", "512GB, Gray space", 210000.0, 8)
     product2 = Product("Xiaomi Redmi Note 11", "1024GB, Синий", 31000.0, 14)
     category = Category(
@@ -91,6 +93,7 @@ def test_classes_methods(capsys):
     print(str(product1))
     captured = capsys.readouterr()
     assert captured.out == "Iphone 15, 210000.0 руб. Остаток: 8 шт.\n"
+    assert mock_product_log.call_count == 2  # Проверяем, что product_log вызван для product1 и product2
 
     print(str(product2))
     captured = capsys.readouterr()
@@ -163,3 +166,5 @@ def test_lawngrass_addition():
     grass2 = LawnGrass("Grass2", "Desc2", 150.0, 15, "Country2", "7 дней", "Dark Green")
     result = grass1 + grass2
     assert result == 3250.0
+
+
