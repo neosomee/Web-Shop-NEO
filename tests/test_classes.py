@@ -41,8 +41,8 @@ def test_init_product(product):
 def test_init_category(category):
     assert category.name == "Смартфоны"
     assert (
-        category.description
-        == "Смартфоны, как средство не только коммуникации, но и получения дополнительных функций для удобства жизни"
+            category.description
+            == "Смартфоны, как средство не только коммуникации, но и получения дополнительных функций для удобства жизни"
     )
     assert category.products == [
         "Samsung Galaxy S23 Ultra, 180000.0 руб. Остаток: 5 шт.\n",
@@ -80,7 +80,8 @@ def test_product_price_set(mock_input, capsys):
     assert product.price == 1000
     assert mock_input.call_count == 2
 
-@patch("src.classes.Mixin.product_log", return_value = None)
+
+@patch("src.classes.Mixin.product_log", return_value=None)
 def test_classes_methods(mock_product_log, capsys):
     product1 = Product("Iphone 15", "512GB, Gray space", 210000.0, 8)
     product2 = Product("Xiaomi Redmi Note 11", "1024GB, Синий", 31000.0, 14)
@@ -168,3 +169,14 @@ def test_lawngrass_addition():
     assert result == 3250.0
 
 
+def test_middle_price_category():
+    product1 = Product("Samsung Galaxy S23 Ultra", "256GB, Серый цвет, 200MP камера", 180000.0, 7)
+    product2 = Product("Iphone 15", "512GB, Gray space", 210000.0, 10)
+    product3 = Product("Xiaomi Redmi Note 11", "1024GB, Синий", 31000.0, 6)
+
+    category1 = Category("Смартфоны", "Категория смартфонов", [product1, product2, product3])
+
+    assert category1.middle_price() == 140333.33333333334
+
+    category_empty = Category("Смартфоны", "Категория смартфонов", [])
+    assert category_empty.middle_price() == 0

@@ -36,6 +36,10 @@ class Product(Mixin, BaseProduct):
     def __init__(self, name, description, price, quantity):
         BaseProduct.__init__(self, name, description, price, quantity)
         Mixin.product_log(self)
+        if quantity <= 0:
+            raise ValueError("Товар с нулевым количеством не может быть добавлен")
+        else:
+            self.quantity = quantity
 
     def __str__(self):
         return f"{self.name}, {self.price} руб. Остаток: {self.quantity} шт."
@@ -124,3 +128,14 @@ class Category:
         for i in self.__products:
             my_list.append(f"{i.name}, {i.price} руб. Остаток: {i.quantity} шт.\n")
         return my_list
+
+    def middle_price(self):
+        try:
+            product_count = len(self.__products)
+            sum = 0
+            for i in self.__products:
+                sum += i.price
+
+            return sum / product_count
+        except ZeroDivisionError:
+            return 0
