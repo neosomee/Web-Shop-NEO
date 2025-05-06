@@ -36,7 +36,7 @@ class Product(Mixin, BaseProduct):
     def __init__(self, name, description, price, quantity):
         BaseProduct.__init__(self, name, description, price, quantity)
         Mixin.product_log(self)
-        if quantity <- 0:
+        if quantity <= 0:
             raise ValueError("Товар с нулевым количеством не может быть добавлен")
         else:
             self.quantity = quantity
@@ -137,6 +137,5 @@ class Category:
                 sum += i.price
 
             return sum / product_count
-        except:
+        except ZeroDivisionError:
             return 0
-
